@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<package version="2.0" unique-identifier="PrimaryID" xmlns="http://www.idpf.org/2007/opf">
+
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+
+<dc:title>{{ title }}</dc:title>
+<dc:identifier id="PrimaryID" opf:scheme="URN">urn:uuid:{{ uuid }}</dc:identifier>
+<dc:identifier opf:scheme="URI"></dc:identifier>
+<dc:language>{{ language }}</dc:language>
+<dc:creator opf:role="aut" opf:file-as="{{ author_as }}">{{ author }}</dc:creator>
+<dc:publisher>{{ publisher }}</dc:publisher>
+<dc:description>{{ description }}</dc:description>
+<dc:coverage></dc:coverage>
+<dc:source>{{ source }}</dc:source>
+<dc:date opf:event="original-publication">{{ published }}</dc:date>
+<dc:date opf:event="ops-publication"></dc:date>
+<dc:rights>{{ rights }}</dc:rights>
+</metadata>
+
+
+<manifest>
+
+<!-- Content Documents -->
+{% for section in sections %}
+<item id="{{ section.file }}" href="{{ section.file }}.xml" media-type="application/xhtml+xml" />
+{% endfor %}
+
+<!-- CSS Style Sheets -->
+{% for stylesheet in stylesheets %}
+<item id="{{ stylesheet }}-css" href="css/{{ stylesheet }}" media-type="text/css" />
+{% endfor %}
+
+<!-- Images -->
+<item id="book-cover" href="images/cover.png" media-type="image/png" />
+
+<!-- NCX -->
+<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+
+</manifest>
+
+<spine toc="ncx">
+{% for section in sections %}
+<itemref idref="{{ section.file }}" linear="yes" />
+{% endfor %}
+</spine>
+
+<guide>
+{% for section in sections %}
+<reference type="{{ section.type }}" title="{{ section.file }}" href="{{ section.file }}.xml" />
+{% endfor %}
+</guide>
+
+</package>

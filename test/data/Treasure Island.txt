@@ -1,0 +1,83 @@
+{{hide in print | {{indexes|Pirates}} }}
+{{header
+ | title    = Treasure Island
+ | author   = Robert Louis Stevenson
+ | section  = 
+ | previous = 
+ | next     = [[/Chapter 1|Chapter 1]]
+ | notes    = '''''Treasure Island''' is an adventure novel narrating a tale of "buccaneers and buried gold". First published as a book in 1883, it was originally serialised in the children's magazine ''Young Folks'' between 1881-82 under the title "The Sea Cook, or Treasure Island".''
+
+''Traditionally considered a [[w:Bildungsroman|coming of age story]], it is an adventure tale of superb atmosphere, character and action, and also a wry commentary on the ambiguity of morality—as seen in Long John Silver—unusual for children's literature then and now. It is one of the most frequently dramatised of all novels, and its influence on popular lore about pirates can not be overestimated.''
+{{wikipediaref}}
+}}
+[[Image:Treasure Island-Scribner's-1911.jpg|thumb|1911 book cover]]
+===Table of Contents===
+*'''Part One: The Old Buccaneer'''
+*[[/Chapter 1|Chapter 1]]: The Old Sea-dog at the Admiral Benbow 
+*[[/Chapter 2|Chapter 2]]: Black Dog Appears and Disappears 
+*[[/Chapter 3|Chapter 3]]: The Black Spot 
+*[[/Chapter 4|Chapter 4]]: The Sea-chest 
+*[[/Chapter 5|Chapter 5]]: The Last of the Blind Man 
+*[[/Chapter 6|Chapter 6]]: The Captain's Papers 
+*'''Part Two: The Sea Cook'''
+*[[/Chapter 7|Chapter 7]]: I Go to Bristol 
+*[[/Chapter 8|Chapter 8]]: At the Sign of the Spy-glass 
+*[[/Chapter 9|Chapter 9]]: Powder and Arms 
+*[[/Chapter 10|Chapter 10]]: The Voyage 
+*[[/Chapter 11|Chapter 11]]: What I Heard in the Apple Barrel 
+*[[/Chapter 12|Chapter 12]]: Council of War 
+*'''Part Three: My Short Adventure'''
+*[[/Chapter 13|Chapter 13]]: How My Shore Adventure Began
+*[[/Chapter 14|Chapter 14]]: The First Blow
+*[[/Chapter 15|Chapter 15]]: The Man of the Island
+*'''Part Four: The Stockade'''
+*[[/Chapter 16|Chapter 16]]: Narrative Continued by the Doctor: How the Ship Was Abandoned 
+*[[/Chapter 17|Chapter 17]]: Narrative Continued by the Doctor: The Jolly-boat's Last Trip 
+*[[/Chapter 18|Chapter 18]]: Narrative Continued by the Doctor: End of the First Day's Fighting 
+*[[/Chapter 19|Chapter 19]]: Narrative Resumed by Jim Hawkins: The Garrison in the Stockade 
+*[[/Chapter 20|Chapter 20]]: Silver's Embassy 
+*[[/Chapter 21|Chapter 21]]: The Attack 
+*'''Part Five: My Sea Adventure'''
+*[[/Chapter 22|Chapter 22]]: How My Sea Adventure Began 
+*[[/Chapter 23|Chapter 23]]: The Ebb-tide Runs 
+*[[/Chapter 24|Chapter 24]]: The Cruise of the Coracle 
+*[[/Chapter 25|Chapter 25]]: I Strike the Jolly Roger 
+*[[/Chapter 26|Chapter 26]]: Israel Hands 
+*[[/Chapter 27|Chapter 27]]: "Pieces of Eight" 
+*'''Part Six: Captain Silver'''
+*[[/Chapter 28|Chapter 28]]: In the Enemy's Camp 
+*[[/Chapter 29|Chapter 29]]: The Black Spot Again 
+*[[/Chapter 30|Chapter 30]]: On Parole 
+*[[/Chapter 31|Chapter 31]]: The Treasure Hunt--Flint's Pointer 
+*[[/Chapter 32|Chapter 32]]: The Treasure Hunt--The Voice Among the Trees 
+*[[/Chapter 33|Chapter 33]]: The Fall of a Chieftain 
+*[[/Chapter 34|Chapter 34]]: And Last
+
+===Annotations===
+*[[/Baker Intro|Introduction to 1909 Annotated Edition]], by [[Author:Franklin T. Baker|Franklin T. Baker]]
+*[[The Art of Writing#MY_FIRST_BOOK:_.E2.80.98TREASURE_ISLAND.E2.80.99_.7B17.7D|Stevenson's Introduction to the 1912 Edition]]
+
+==Gallery of Full Illustrations==
+Gallery of [[w:N. C. Wyeth|N.C. Wyeth]] illustrations
+<gallery>
+Image:TI-knife.jpg
+Image:TI-treasure.jpg
+Image:TI-parrot.jpg
+Image:TI-Israel.jpg
+Image:TI-stockade.jpg
+Image:TI-Gunn.jpg
+Image:TI-PreparingFormutiny.jpg
+Image:TI-JimLJParr.jpg
+Image:TI-blindpew.jpg
+Image:TI-billy.jpg
+</gallery>
+
+[[Category:1883 works]]
+[[Category:Adventure]]
+[[Category:Early modern works]]
+[[Category:Fiction]]
+[[Category:Novels]]
+
+[[es:La isla del tesoro]]
+[[fr:L’Île au trésor]]
+[[sv:Skattkammarön]]

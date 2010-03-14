@@ -1,0 +1,6 @@
+{% extends "section.xml" %}
+{% block body %}
+<div id="{{ id }}" class="chapter">
+<h2><span class="chapterHeader">{{ title }}</span></h2>
+{{ text }}
+{% endblock %}

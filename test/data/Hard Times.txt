@@ -1,0 +1,133 @@
+{{header2
+ | title    = Hard Times
+ | author   = Charles Dickens
+ | section  = 
+ | previous = 
+ | next     = 
+ | notes    = Hard Times ''is a novel by Charles Dickens, published in 1854. It is significant for being the shortest of his full novels. The book is one of a number of state-of-the-nation novels published around the same time, another being'' [[North and South]] ''by [[Author:Elizabeth Gaskell|Elizabeth Gaskell]], which aimed to highlight the social and economic pressures some people were under. The novel is unusual, in that it is not set in London, as is Dickens' usual wont, but the fictitious Victorian industrial town of Coketown. It has met mixed critical response from a diverse range of critics, such [[Author:F. R. Leavis|F. R. Leavis]], [[Author:George Bernard Shaw|George Bernard Shaw]], and [[Author:Thomas Babington Macaulay|Thomas Macaulay]]. This was usual for Dickens' treatment of trade unions, and the pessimism about the division between capitalistic millowners and the undervalued workers, after the Industrial Revolution, set in the Victorian era of Britain.''{{wikipediaref|Hard Times}}
+}}
+
+<big><b>Table of Contents</b>
+
+{|border=0 cellpadding=0 cellspacing=0
+|colspan="2"|<br><b>Book the First: Sowing<b>
+|- 
+|align="right"|[[/First Book/Chapter I|I.&nbsp;]] 
+|The One Thing Needful 
+|- 
+|align="right"|[[/First Book/Chapter II|II.&nbsp;]] 
+|Murdering the Innocents 
+|- 
+|align="right"|[[/First Book/Chapter III|III.&nbsp;]] 
+|A Loophole 
+|- 
+|align="right"|[[/First Book/Chapter IV|IV.&nbsp;]] 
+|Mr. Bounderby 
+|- 
+|align="right"|[[/First Book/Chapter V|V.&nbsp;]] 
+|The Keynote 
+|- 
+|align="right"|[[/First Book/Chapter VI|VI.&nbsp;]] 
+|Sleary's Horsemanship 
+|- 
+|align="right"|[[/First Book/Chapter VII|VII.&nbsp;]] 
+|Mrs. Sparsit 
+|- 
+|align="right"|[[/First Book/Chapter VIII|VIII.&nbsp;]] 
+|Never Wonder 
+|- 
+|align="right"|[[/First Book/Chapter IX|IX.&nbsp;]] 
+|Sissy's Progress 
+|- 
+|align="right"|[[/First Book/Chapter X|X.&nbsp;]] 
+|Stephen Blackpool 
+|- 
+|align="right"|[[/First Book/Chapter XI|XI.&nbsp;]] 
+|No Way Out 
+|- 
+|align="right"|[[/First Book/Chapter XII|XII.&nbsp;]] 
+|The Old Woman 
+|- 
+|align="right"|[[/First Book/Chapter XIII|XIII.&nbsp;]] 
+|Rachael 
+|- 
+|align="right"|[[/First Book/Chapter XIV|XIV.&nbsp;]] 
+|The Great Manufacturer 
+|- 
+|align="right"|[[/First Book/Chapter XV|XV.&nbsp;]] 
+|Father and Daughter 
+|- 
+|align="right"|[[/First Book/Chapter XVI|XVI.&nbsp;]] 
+|Husband and Wife
+|- 
+|colspan="2"|<br><b>Book the Second: Reaping</b>
+|- 
+|align="right"|[[/Second Book/Chapter I|I.&nbsp;]] 
+|Effects in the Bank 
+|- 
+|align="right"|[[/Second Book/Chapter II|II.&nbsp;]] 
+|Mr. James Harthouse 
+|- 
+|align="right"|[[/Second Book/Chapter III|III.&nbsp;]] 
+|The Whelp 
+|- 
+|align="right"|[[/Second Book/Chapter IV|IV.&nbsp;]] 
+|Men and Brothers 
+|- 
+|align="right"|[[/Second Book/Chapter V|V.&nbsp;]] 
+|Men and Masters 
+|- 
+|align="right"|[[/Second Book/Chapter VI|VI.&nbsp;]] 
+|Fading Away 
+|- 
+|align="right"|[[/Second Book/Chapter VII|VII.&nbsp;]] 
+|Gunpowder 
+|- 
+|align="right"|[[/Second Book/Chapter VIII|VIII.&nbsp;]] 
+|Explosion 
+|- 
+|align="right"|[[/Second Book/Chapter IX|IX.&nbsp;]] 
+|Hearing the Last of It 
+|- 
+|align="right"|[[/Second Book/Chapter X|X.&nbsp;]] 
+|Mrs. Sparsit's Staircase 
+|- 
+|align="right"|[[/Second Book/Chapter XI|XI.&nbsp;]] 
+|Lower and Lower 
+|- 
+|align="right"|[[/Second Book/Chapter XII|XII.&nbsp;]] 
+|Down 
+|- 
+|colspan="2"|<br><b>Book the Third: Garnering</b>
+|- 
+|align="right"|[[/Third Book/Chapter I|I.&nbsp;]] 
+|Another Thing Needful 
+|- 
+|align="right"|[[/Third Book/Chapter II|II.&nbsp;]] 
+|Very Ridiculous 
+|- 
+|align="right"|[[/Third Book/Chapter III|III.&nbsp;]] 
+|Very Decided 
+|- 
+|align="right"|[[/Third Book/Chapter IV|IV.&nbsp;]] 
+|Lost 
+|- 
+|align="right"|[[/Third Book/Chapter V|V.&nbsp;]] 
+|Found 
+|- 
+|align="right"|[[/Third Book/Chapter VI|VI.&nbsp;]] 
+|The Starlight 
+|- 
+|align="right"|[[/Third Book/Chapter VII|VII.&nbsp;]] 
+|Whelp-Hunting 
+|- 
+|align="right"|[[/Third Book/Chapter VIII|VIII.&nbsp;]] 
+|Philosophical 
+|- 
+|align="right"|[[/Third Book/Chapter IX|IX.&nbsp;]] 
+|Final 
+|} 
+
+{{PD-old|Hard Times}}
+[[Category:1854 works]]
+[[Category:Novels]]

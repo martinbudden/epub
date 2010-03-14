@@ -1,0 +1,33 @@
+{{TextQuality|50%}}{{header2
+ | title    = Through the Looking-Glass, and What Alice Found There
+ | author   = Lewis Carroll
+ | section  = 
+ | previous = 
+ | next     = 
+ | notes    = '''''Through the Looking-Glass, and What Alice Found There''''' is a [[w:1871|1871]] children's book written by [[author:Lewis Carroll|Lewis Carroll]]. It is an indirect sequel to ''[[Alice's Adventures in Wonderland]]''. 
+{{Wikipediarefb}}{{spoken}}
+}}
+
+===Contents===
+*[[/Preface|Poem: Child of the pure unclouded brow]]
+*[[/Chapter I|Chapter I: Looking-Glass House]]
+*[[/Chapter II|Chapter II: The Garden of Live Flowers]]
+*[[/Chapter III|Chapter III: Looking-Glass Insects]]
+*[[/Chapter IV|Chapter IV: Tweedledum and Tweedledee]]
+*[[/Chapter V|Chapter V: Wool and Water]]
+*[[/Chapter VI|Chapter VI: Humpty Dumpty]]
+*[[/Chapter VII|Chapter VII: The Lion and the Unicorn]]
+*[[/Chapter VIII|Chapter VIII: "It's My Own Invention!"]]
+*[[/Chapter IX|Chapter IX: Queen Alice]] {{speaker|15}}
+*[[/Chapter X|Chapter X: Shaking]]
+*[[/Chapter XI|Chapter XI: Waking]]
+*[[/Chapter XII|Chapter XII: Which Dreamed It?]]
+
+{{PD-old}}
+
+[[it:Attraverso lo specchio]]
+
+[[Category:1871 works]]
+[[Category:Early modern works]]
+[[Category:Fiction]]
+[[Category:Alice in Wonderland]]
