@@ -1,0 +1,16 @@
+{{saved_book}}
+ 
+== Space ==
+
+:[[Wikipedia:Books/Space/Introduction|Introduction]]
+:'''Note.''' This book is based on the Wikipedia article, "Space."  The supporting articles are those referenced as major expansions of selected sections.
+;Main article
+:[[Space]]
+;Supporting articles
+:[[Astronomy]]
+:[[Theory of relativity]]
+:[[Shape of the Universe]]
+:[[Measurement]]
+
+
+[[Category:Wikipedia:Books on space|Space]]
