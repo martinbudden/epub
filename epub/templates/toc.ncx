@@ -5,10 +5,10 @@
 
 <head>
 <!-- The following four metadata items are required for all NCX documents, including those conforming to the relaxed constraints of OPS2.0 -->
-<meta name="dtb:uid" content="{{ uid }}" />
-<meta name="dtb:depth" content="{{ depth }}" />
-<meta name="dtb:totalPageCount" content="0" />
-<meta name="dtb:maxPageNumber" content="0" />
+<meta name="dtb:uid" content="{{ uid }}"/>
+<meta name="dtb:depth" content="{{ depth }}"/>
+<meta name="dtb:totalPageCount" content="0"/>
+<meta name="dtb:maxPageNumber" content="0"/>
 </head>
 
 <docTitle>
@@ -24,7 +24,7 @@
 {% for section in sections %}
 <navPoint class="{{ section.class }}" id="{{ section.id }}" playOrder="{{ section.playorder }}">
 <navLabel><text>{{ section.title }}</text></navLabel>
-<content src="{{ section.file }}.xml" />
+<content src="{{ section.file }}.xml"/>
 </navPoint>
 {% endfor %}
 

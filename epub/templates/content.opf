@@ -22,31 +22,30 @@
 
 <!-- Content Documents -->
 {% for section in sections %}
-<item id="{{ section.file }}" href="{{ section.file }}.xml" media-type="application/xhtml+xml" />
+<item id="{{ section.file }}" href="{{ section.file }}.xml" media-type="application/xhtml+xml"/>
 {% endfor %}
 
 <!-- CSS Style Sheets -->
 {% for stylesheet in stylesheets %}
-<item id="{{ stylesheet }}-css" href="css/{{ stylesheet }}" media-type="text/css" />
+<item id="{{ stylesheet }}-css" href="css/{{ stylesheet }}" media-type="text/css"/>
 {% endfor %}
 
 <!-- Images -->
-<item id="book-cover" href="images/cover.png" media-type="image/png" />
 
 <!-- NCX -->
-<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+<item id="ncx" href="{{ ncxfile }}" media-type="application/x-dtbncx+xml"/>
 
 </manifest>
 
 <spine toc="ncx">
 {% for section in sections %}
-<itemref idref="{{ section.file }}" linear="yes" />
+<itemref idref="{{ section.file }}" linear="yes"/>
 {% endfor %}
 </spine>
 
 <guide>
 {% for section in sections %}
-<reference type="{{ section.type }}" title="{{ section.file }}" href="{{ section.file }}.xml" />
+<reference type="{{ section.type }}" title="{{ section.file }}" href="{{ section.file }}.xml"/>
 {% endfor %}
 </guide>
 

@@ -90,67 +90,25 @@ def parse_wediawiki_xml(text):
 		print "caught"
 	return handler.text
 
-def parse_wikisource_contents(text):
-	"""
-	Parse the text of a Wikisource contents page to ascertain the title, author and sections of a work.
-	The sections are typically chapters of a book, but may be other subdivisions of a work.
-	"""
-	#print "--------------------------------------"
-	#print "text:", text
-	#print "--------------------------------------"
-	info = {'title':"",'author':"",'author_as':"",'published':""}
-	title = ""
-	m = re.search("\s*title\s*=\s*(.*)",text)
-	if m:
-		title = m.group(1)
-		title = re.sub("\[\[","",title)
-		title = re.sub("\]\]","",title)
-	info['title'] = title.strip()
-	author = ""
-	m = re.search("\s*author\s*=\s*(.*)",text)
-	if m:
-		author = m.group(1)
-	info['author'] = author.strip()
-	info['author_as'] = info['author']
-	#print "author:",info['author']
-	#print "title:",info['title']
-	sections = []
-	for m in re.finditer("\s*\*\s*\[\[([^\]]*)\]\](.*)",text):
-		cp = m.group(1)
-		ct = cp + m.group(2)
-		ct = re.sub("\{\{(?:[^\}]*)\}\}","",ct)
-		pos = cp.find("|")
-		if pos != -1:
-			cp = cp[0:pos]
-			ct = ct[pos+1:]
-		pos = cp.find("/")
-		if pos != -1:
-			cp = cp[pos:]
-		cp = re.sub(" ","_",cp)
-		sections.append({'wikisubpage':cp.strip(),'title':ct.strip()})
-		#print "ch:",cp,ct
-	info['sections'] = sections
-	return info
-
 def httpGet(host,uri):
 	print "httpGet:",uri
 	http = httplib.HTTP(host)
 
-        # write header
+	# write header
 	USER_AGENT = "httplib-example-1.py"
-        http.putrequest("GET", uri)
-        http.putheader("User-Agent", USER_AGENT)
-        http.putheader("Host", host)
-        http.putheader("Accept", "*/*")
-        http.endheaders()
+	http.putrequest("GET", uri)
+	http.putheader("User-Agent", USER_AGENT)
+	http.putheader("Host", host)
+	http.putheader("Accept", "*/*")
+	http.endheaders()
 
-        # get response
-        errcode, errmsg, headers = http.getreply()
-        if errcode != 200:
-            raise Error(errcode, errmsg, headers)
+	# get response
+	errcode, errmsg, headers = http.getreply()
+	if errcode != 200:
+		raise Error(errcode, errmsg, headers)
 
-        file = http.getfile()
-        return file.read()
+	file = http.getfile()
+	return file.read()
 
 
 def httpGetOld(host,uri):
@@ -208,35 +166,65 @@ def mediaWikiToXHTML(text,references):
 	s = re.sub("</poem>",'</div>',s)
 	return s
 
-def get_mediawiki_book(epub,title):
-	# http://en.wikipedia.org/wiki/Wikipedia:Books/Space
+def parse_wikisource_contents(text):
 	"""
-	== Space ==
-	:[[Wikipedia:Books/Space/Table of contents|Table of contents]]
-	:[[Wikipedia:Books/Space/Introduction|Introduction]]
-	:'''Note.''' This book is based on the Wikipedia article, "Space."  The supporting articles are those referenced as major expansions of selected sections.
-	;Main article
-	:[[Space]]
-	;Supporting articles
-	:[[Astronomy]]
-	:[[Theory of relativity]]
-	:[[Shape of the Universe]]
-	:[[Measurement]]
+	Parse the text of a Wikisource contents page to ascertain the title, author and sections of a work.
+	The sections are typically chapters of a book, but may be other subdivisions of a work.
 	"""
-	# http://en.wikipedia.org/wiki/Wikipedia:Books/Computer_Networking
-	# http://en.wikipedia.org/w/api.php?format=xml&action=query&prop=revisions&titles=Wikipedia:Books/Computer_Networking&rvprop=content|timestamp|user|ids
-	#http://en.wikipedia.org/wiki/Computer_networking
-	#http://en.wikipedia.org/w/index.php?title=Computer_networking&action=render
-	wikipagetitle = re.sub(" ","_",title)
-	print "wikipagetitle",wikipagetitle
-	uriTemplate = "/w/api.php?format=xml&action=query&prop=revisions&titles=Wikipedia:Books/%(title)s&rvprop=content|timestamp|user|ids"
-	uri = uriTemplate % {'title':wikipagetitle}
-	print uri
-	text = httpGet(host,uri)
+	#print "--------------------------------------"
+	#print "text:", text
+	#print "--------------------------------------"
+	info = {'title':"",'author':"",'author_as':"",'translator':"",'published':""}
+	title = ""
+	m = re.search("\s*title\s*=\s*(.*)",text)
+	if m:
+		title = m.group(1)
+		title = re.sub("\[\[","",title)
+		title = re.sub("\]\]","",title)
+	info['title'] = title.strip()
+	author = ""
+	m = re.search("\s*author\s*=\s*(.*)",text)
+	if m:
+		author = m.group(1)
+	info['author'] = author.strip()
+	info['author_as'] = info['author']
+	translator = ""
+	m = re.search("\s*translator\s*=\s*(.*)",text)
+	if m:
+		translator = m.group(1)
+	info['translator'] = translator.strip()
+	sections = []
+	for m in re.finditer("\s*\*\s*\[\[([^\]]*)\]\](.*)",text):
+		cp = m.group(1)
+		ct = cp + m.group(2)
+		ct = re.sub("\{\{(?:[^\}]*)\}\}","",ct)
+		pos = cp.find("|")
+		if pos != -1:
+			cp = cp[0:pos]
+			ct = ct[pos+1:]
+		pos = cp.find("/")
+		if pos != -1:
+			cp = cp[pos:]
+		cp = re.sub(" ","_",cp)
+		sections.append({'wikisubpage':cp.strip(),'title':ct.strip()})
+		print "ch:",cp,ct
+	info['sections'] = sections
+	return info
+
+def parse_mediawiki_book_contents(text):
+	"""
+	Parse the text of a mediawiki book contents page to ascertain the title, author and sections of a work.
+	"""
+	info = {'title':"",'author':"",'author_as':"",'published':""}
+	title = ""
 	m = re.search("\n==(.*)==\n",text)
 	if m:
 		title = m.group(1).strip()
-	
+	author = "Wikipedia"
+	info['title'] = title
+	info['author'] = author.strip()
+	info['author_as'] = info['author']
+
 	sections = []
 	#sections.append({'wikisubpage':"Space",'title':"Space"})
 	for m in re.finditer(":\[\[([^\]]*)\]\]",text):
@@ -253,36 +241,29 @@ def get_mediawiki_book(epub,title):
 		cp = re.sub(" ","_",cp)
 		sections.append({'wikisubpage':cp,'title':ct})
 		#print "ch:",cp,ct
+	info['sections'] = sections
+	return info
 
-	author = "Wikipedia"
-	author_as = author
-	published = ""
-	print "author:",author
-	print "title:",title
 
-	epub.set(title,author,author_as,published,"Wikipedia")
-	epub.addSection({'class':"title",'type':"cover",'id':"level1-title",'playorder':"1",'title':"Title",'file':"titlepage",'text':title})
-
-	uriTemplate = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids"
-	count = 1
-	playorder = 2
-	for i in sections:
-		#if count > 1:
-		#	break
-		uri = uriTemplate % {'title':i['wikisubpage']}
-		print "uri",uri
-		print "=========================="
-		print "getting",i['title']
-		text = httpGet(host,uri)
-
-		text = parseMediaWikiXML(text)
-		text = removeNoPrint(text)
-		text = getXHTML(text)
-		#text = mediaWikiToXHTML(text)
-		epub.addSection({'class':"section",'type':"text",'id':"level1-section"+str(count),'playorder':str(playorder),'count':str(count),'title':i['title'],'file':"main"+str(count),'text':text})
-		count += 1
-		playorder += 1
-
+def get_mediawiki_book(epub,host,title):
+	"""
+	Get a mediawiki book and put its contents into an epub object.
+	"""
+	wikipagetitle = re.sub(" ","_",title)
+	print "wikipagetitle",wikipagetitle
+	# http://en.wikipedia.org/wiki/Book:Space
+	# http://en.wikipedia.org/wiki/Book:Computer_Networking
+	# http://en.wikipedia.org/w/api.php?format=xml&action=query&prop=revisions&titles=Book:Computer_Networking&rvprop=content|timestamp|user|ids
+	# http://en.wikipedia.org/wiki/Computer_networking
+	# http://en.wikipedia.org/w/index.php?title=Computer_networking&action=render
+	uriTemplate = "/w/api.php?format=xml&action=query&prop=revisions&titles=Book:%(title)s&rvprop=content|timestamp|user|ids"
+	uri = uriTemplate % {'title':wikipagetitle}
+	print "uri",uri
+	text = httpGet(host,uri)
+	print "text:",text
+	info = parse_mediawiki_book_contents(text)
+	info['source'] = "Wikisource"
+	add_sections(info)
 	return epub
 
 def get_wikisource_work(epub,host,title):
@@ -300,85 +281,106 @@ def get_wikisource_work(epub,host,title):
 
 	uriTemplate = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids"
 	#uriTemplate = "/w/api.php?action=parse&page=%(title)s"
+	#uriTemplate = "/w/api.php?action=expandtemplates&title=%(title)s"
 	uri = uriTemplate % {'title':wikipagetitle}
 	text = httpGet(host,uri)
+	#print "text:",text
+	#return
+	print "uri",uri
 	text = parse_wediawiki_xml(text)
 	info = parse_wikisource_contents(text)
-	epub.set(info['title'],info['author'],info['author_as'],info['published'],"Wikisource")
+	info['source'] = "Wikisource"
+	if len(info['sections']) == 0:
+		add_section(epub,info,host,wikipagetitle,text)
+	else:
+		add_sections(epub,info,host,wikipagetitle)
+	return epub
+
+def add_sections(epub,info,host,wikipagetitle):
+	epub.set(info['title'],info['author'],info['author_as'],info['published'],info['source'])
 	# add the title page
-	epub.addSection({'class':"title",'type':"cover",'id':"level1-title",'playorder':"1",'title':"Title",'file':"titlepage",'text':['title']})
+	epub.addSection({'class':"title",'type':"cover",'id':"level1-title",'playorder':"1",'title':"Title",'file':"titlepage",'text':info['title']})
 	sections = info['sections']
 
+	uriTemplate = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids"
 	#uriTemplate = "/w/api.php?format=xml&action=parse&page=%(title)s"
 	count = 1
-	playorder = 2
 	print "sections:",sections
 	for i in sections:
 		# get each section (typically a chapter) and add it to the epub object
 		# each section is a separate wiki page
-		print "=========================="
-		print "section:",i['title']
 		if count > 3:
 			break
-		uri = uriTemplate % {'title':wikipagetitle+i['wikisubpage']}
+		print "=========================="
 		print "getting",i['title']
-		print uri
+		uri = uriTemplate % {'title':wikipagetitle+i['wikisubpage']}
+		print "uri",uri
 		text = httpGet(host,uri)
-
 		text = parse_wediawiki_xml(text)
 		text = removeNoPrint(text)
 		text = getXHTML(text)
 		#text = mediaWikiToXHTML(text)
-		epub.addSection({'class':"chapter",'type':"text",'id':"level1-s"+str(count),'playorder':str(playorder),'count':str(count),'title':i['title'],'file':"main"+str(count),'text':text})
+		epub.addSection({'class':"chapter",'type':"text",'id':"level1-s"+str(count),'playorder':str(count+1),'count':str(count),'title':i['title'],'file':"main"+str(count),'text':text})
 		count += 1
-		playorder += 1
 
-	if len(sections) == 0:
-		# whole work is one wiki page, so split on headings
-		print "zero sections"
-		refcount = 0
-		references = []
-		tt = ""
-		start = 0
-		end = len(text)
-		for m in re.finditer("(<ref>([^<]*)</ref>)",text):
-			#print "fffff:",m.group(1)
-			references.append(m.group(2))
-			refcount += 1
-			tt += text[start:m.start(1)] + "<sup>["+ str(refcount)+"]</sup>"
-			start = m.end(1)
-			#tt += "["+ str(refcount)+"]"
-			#print "tt:",tt
-		tt += text[start:end]
+def add_section(epub,info,host,wikipagetitle,text):
+	# whole work is one wiki page, so split on headings
+	# eg "Groundwork of the Metaphysics of Morals" at http://en.wikisource.org/wiki/Groundwork_of_the_Metaphysics_of_Morals
 
-		if tt!="":
-			#print "ttx:",tt
-			text = tt;
-		start = 0	
-		end = len(text)
-		chtitle = "main"
-		for m in re.finditer("(\s*==([^=]+)==\s+)",text):
-			print "s1,e1", m.start(1), m.end(1)
-			#print "s2,e2", m.start(2), m.end(2)
-			end = m.start(1)
-			if start!=0:
-				chtext = text[start:end]
-				chtext = mediaWikiToXHTML(chtext,references)
-				epub.addSection({'class':"chapter",'type':"text",'id':"level1-chapter"+str(count),'playorder':str(playorder),'count':str(count),'title':chtitle,'file':"main"+str(count),'text':chtext})
-				#print "chtitle:",chtitle
-				#print "chtext:",chtext[0:40]
-				count += 1
-				playorder += 1
-			start = m.end(1)
-			chtitle = m.group(2)
-		chtext = text[start:]
-		print "sx,ex",start,end
-		print "chtextx:",chtitle,chtext
-		chtext = mediaWikiToXHTML(chtext,references)
-		epub.addSection({'class':"chapter",'type':"text",'id':"level1-chapter"+str(count),'playorder':str(playorder),'count':str(count),'title':chtitle,'file':"main"+str(count),'text':chtext})
-		#text = parseMediaWikiXML(text)
-		#text = removeNoPrint(text)
-		#text = getXHTML(text)
-		#epub.addSection({'class':"section",'type':"text",'id':"level1-section"+str(count),'playorder':str(playorder),'count':str(count),'title':"XXXX",'file':"main"+str(count),'text':text})
-	return epub
+	epub.set(info['title'],info['author'],info['author_as'],info['published'],info['source'])
+	# add the title page
+	epub.addSection({'class':"title",'type':"cover",'id':"level1-title",'playorder':"1",'title':"Title",'file':"titlepage",'text':info['title']})
+	print "zero sections"
+	# reget the page, expanding the templates
+	uriTemplate = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids&rvexpandtemplates"
+	uri = uriTemplate % {'title':wikipagetitle}
+	text = httpGet(host,uri)
+	print "uri",uri
+	text = parse_wediawiki_xml(text)
+
+	#print "text:",text
+	refcount = 0
+	references = []
+	tt = ""
+	start = 0
+	end = len(text)
+	for m in re.finditer("(<ref>([^<]*)</ref>)",text):
+		#print "fffff:",m.group(1)
+		references.append(m.group(2))
+		refcount += 1
+		tt += text[start:m.start(1)] + "<sup>["+ str(refcount)+"]</sup>"
+		start = m.end(1)
+		#tt += "["+ str(refcount)+"]"
+		#print "tt:",tt
+	tt += text[start:end]
+
+	if tt != "":
+		#print "ttx:",tt
+		text = tt;
+	start = 0
+	end = len(text)
+	chtitle = "main"
+	count = 1
+	for m in re.finditer("(\s*==([^=]+)==\s+)",text):
+		print "s1,e1", m.start(1), m.end(1)
+		#print "s2,e2", m.start(2), m.end(2)
+		end = m.start(1)
+		if start!=0:
+			chtext = text[start:end]
+			chtext = mediaWikiToXHTML(chtext,references)
+			print "chtitle:",chtitle
+			print "chtext:",chtext[0:40]
+			epub.addSection({'class':"chapter",'type':"text",'id':"level1-chapter"+str(count),'playorder':str(count+1),'count':str(count),'title':chtitle,'file':"main"+str(count),'text':chtext})
+			count += 1
+		start = m.end(1)
+		chtitle = m.group(2)
+	chtext = text[start:]
+	print "sx,ex",start,end
+	print "chtextx:",chtitle,chtext
+	chtext = mediaWikiToXHTML(chtext,references)
+	epub.addSection({'class':"chapter",'type':"text",'id':"level1-chapter"+str(count),'playorder':str(count+1),'count':str(count),'title':chtitle,'file':"main"+str(count),'text':chtext})
+	#text = parseMediaWikiXML(text)
+	#text = removeNoPrint(text)
+	#text = getXHTML(text)
+	#epub.addSection({'class':"section",'type':"text",'id':"level1-section"+str(count),'playorder':str(playorder),'count':str(count),'title':"XXXX",'file':"main"+str(count),'text':text})
 

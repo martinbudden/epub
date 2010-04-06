@@ -3,4 +3,5 @@
 <div id="{{ id }}" class="chapter">
 <h2><span class="chapterHeader">{{ title }}</span></h2>
 {{ text }}
+</div>
 {% endblock %}

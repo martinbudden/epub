@@ -3,10 +3,12 @@
 # file: epub.py
 
 
-import re
+#import re
 import sys
 import os.path
 from jinja2 import Environment, PackageLoader
+import zipfile
+
 
 class epub():
 	def __init__(self,bookdir):
@@ -31,7 +33,7 @@ class epub():
 		self.rights = ""
 		self.language = "en"
 		self.chapterTranslation = "Chapter"
-		self.xmlExt = ".html"
+		self.xmlExt = ".xml"
 
 	def set(self,title,author,author_as,published,source):
 		self.title = title
@@ -81,7 +83,8 @@ class epub():
 	def writeOpf(self):
 		# Open Packaging Format
 		template = self.env.get_template("content.opf")
-		s = template.render({'title':self.title,'uuid':self.uuid,'language':self.language,'author':self.author,'author_as':self.author_as,'description':self.description,'publisher':self.publisher,'source':self.source,'published':self.published,'rights':self.rights,'stylesheets':self.stylesheets,'sections':self.sections})
+		print "self:",self
+		s = template.render({'title':self.title,'uuid':self.uuid,'language':self.language,'author':self.author,'author_as':self.author_as,'description':self.description,'publisher':self.publisher,'source':self.source,'published':self.published,'ncxfile':self.ncxfilename,'rights':self.rights,'stylesheets':self.stylesheets,'sections':self.sections})
 		self.writeFile(self.opsdir,self.opffilename,s);
 
 	def writeNcx(self):
@@ -128,3 +131,15 @@ class epub():
 		self.writeMimeType()
 		self.writeMetaInf()
 		self.writeOps()
+
+	def zipBook(self):
+		myZipFile = zipfile.ZipFile(self.title+".epub","w")
+		print "zipfile:",self.title+".epub"
+		os.chdir(self.bookdir)
+		for root,dirs,files in os.walk("."):
+			for fileName in files:
+				if fileName[0] != ".":
+					myZipFile.write(os.path.join(root,fileName))
+		myZipFile.close()
+		os.chdir("..")
+

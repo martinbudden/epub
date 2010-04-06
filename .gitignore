@@ -2,3 +2,5 @@
 *.epub
 books
 bookdir
+epub/*.jar
+epub/lib
