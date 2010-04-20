@@ -5,7 +5,7 @@
 # requires figleaf from:
 # http://darcs.idyll.org/~t/projects/figleaf/doc/
 
-find example -name "*.py" > interesting_files.txt
+find epub -name "*.py" > interesting_files.txt
 rm -rf html
 rm -f .figleaf
 figleaf $PYTHONPATH/py.test test
