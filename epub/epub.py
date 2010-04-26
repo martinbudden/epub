@@ -13,7 +13,7 @@ from jinja2 import Environment, PackageLoader
 import zipfile
 
 
-class epub():
+class EPub():
     """
     Class to support writing publications in epub format.
     Has methods to set the publication's metadata and content,
@@ -43,7 +43,7 @@ class epub():
         self.language = "en"
         self.xml_ext = ".xml"
         self.opsdir = ""
-        self.stylesheets = []
+        self.stylesheets = {'page': "page.css", 'titlepage': "titlepage.css", 'about': "about.css", 'main': "main.css"}
 
     def set(self, title, author, author_as, published, source):
         """Set the common attributes for the publication."""
@@ -65,7 +65,7 @@ class epub():
         """Utility function to write a file."""
         filename = os.path.join(dirname, filename)
         FILE = open(filename, "w")
-        FILE.write(content)
+        FILE.write(content.encode("utf-8"))
         FILE.close()
 
     def write_mime_type(self):
@@ -89,9 +89,9 @@ class epub():
         if not os.path.isdir(cssdir):
             os.makedirs(cssdir)
         for i in self.stylesheets:
-            template = self.env.get_template(i)
+            template = self.env.get_template(self.stylesheets[i])
             s = template.render()
-            self.write_file(cssdir, i, s)
+            self.write_file(cssdir, self.stylesheets[i], s)
 
     def write_images(self):
         """Write an empty image directory."""
@@ -102,7 +102,6 @@ class epub():
     def write_opf(self):
         """Write the opf(Open Packaging Format) file."""
         template = self.env.get_template("content.opf")
-        print "self: ", self
         s = template.render({'title': self.title, 'uuid': self.uuid, 'language': self.language,
             'author': self.author, 'author_as': self.author_as, 'description': self.description,
             'publisher': self.publisher, 'source': self.source, 'published': self.published,
@@ -119,14 +118,14 @@ class epub():
 
     def write_title(self, filename):
         """Write the publication's titlepage."""
-        css = "titlepage.css"
+        css = self.stylesheets['titlepage']
         template = self.env.get_template("titlepage.xml")
         s = template.render({'title': self.title, 'css': css, 'author': self.author, 'published': self.published, 'source': self.source})
         self.write_file(self.opsdir, filename, s)
 
     def write_chapter(self, section):
         """Write a file for a chapter in the publication."""
-        css = "main.css"
+        css = self.stylesheets['main']
         #if section['title'].find("section")==-1:
         #<span class="translation">{{ translation }}</span> <span class="count">{{ count }}</span>
         #extra = extra % {'translation': self.sectionTranslation, 'count': section['count']}
@@ -147,7 +146,6 @@ class epub():
         self.opsdir = os.path.join(self.bookdir, "OPS")
         if not os.path.isdir(self.opsdir):
             os.makedirs(self.opsdir)
-        self.stylesheets = ["page.css", "titlepage.css", "about.css", "main.css"]  # , "play.css"]
         self.write_opf()
         self.write_ncx()
         self.write_stylesheets()
@@ -155,19 +153,19 @@ class epub():
         self.write_content()
 
     def write_epub(self):
-        """Write out the epub file."""
+        """Write out the epub directory."""
         self.write_mime_type()
         self.write_meta_inf()
         self.write_ops()
 
-    def zip_book(self):
-        """Zip up the publication directory contents into an .epub file"""
-        my_zip_file = zipfile.ZipFile(self.title + ".epub", "w")
-        print "zipfile: ", self.title + ".epub"
+    def zip_epub(self):
+        """Zip up the epub directory contents into an .epub file"""
+        zip_file = zipfile.ZipFile(self.title + '.epub', 'w')
+        cwd = os.getcwd()
         os.chdir(self.bookdir)
-        for root, dirs, files in os.walk("."):
+        for root, dirs, files in os.walk('.'):
             for filename in files:
-                if filename[0] != ".":
-                    my_zip_file.write(os.path.join(root, filename))
-        my_zip_file.close()
-        os.chdir("..")
+                if filename[0] != '.':
+                    zip_file.write(os.path.join(root, filename))
+        zip_file.close()
+        os.chdir(cwd)

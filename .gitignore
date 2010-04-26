@@ -2,5 +2,9 @@
 *.epub
 books
 bookdir
+html/
+interesting_files.txt
 epub/*.jar
 epub/lib
+epub/books
+epub/bookdir

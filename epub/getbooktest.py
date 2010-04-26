@@ -6,7 +6,7 @@ import epub
 
 
 def write_book():
-    book = epub.epub("bookdir")
+    book = epub.EPub("bookdir")
     book.set("Through the Looking Glass (And What Alice Found There)", "Lewis Carroll", "Carroll, Lewis", "1871", "Wikisource")
     book.add_section({'class': "title",   'type': "cover", 'id': "level1-title",    'playorder': "1", 'title': "Title", 'file': "titlepage", 'text': "Through the Looking Glass (And What Alice Found There)"})
     book.add_section({'class': "chapter", 'type': "text",  'id': "level1-chapter1", 'playorder': "2", 'count': "1", 'title': "Chapter 1 - Looking-Glass House", 'file': "main1", 'text': "<p>ch1 test text</p>"})
@@ -77,7 +77,7 @@ test para 2
     s = re.sub("$\n*", "", s)
 
 
-def testParse():
+def test_parse():
     s = """
 {{TextQuality|50%}}{{header2
  | title    = Through the Looking-Glass, and What Alice Found There

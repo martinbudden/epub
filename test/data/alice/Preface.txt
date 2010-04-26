@@ -1,0 +1,51 @@
+{{header
+ | title      = [[../]]
+ | author     = Lewis Carroll
+ | translator = 
+ | section    = Preface
+ | previous   = [[../]]
+ | next       = [[../Chapter I|Chapter I]]
+ | notes      = 
+}}
+
+<i>Child of the pure unclouded brow <br>
+And dreaming eyes of wonder! <br>
+Though time be fleet, and I and thou <br>
+Are half a life asunder, <br>
+Thy loving smile will surely hail <br>
+The love-gift of a fairy-tale.
+
+I have not seen thy sunny face, <br>
+Nor heard thy silver laughter: <br>
+No thought of me shall find a place <br>
+In thy young life’s hereafter— <br>
+Enough that now thou wilt not fail <br>
+To listen to my fairy-tale.
+
+A tale begun in other days, <br>
+When summer suns were glowing— <br>
+A simple chime, that served in time <br>
+The rhythm of our rowing— <br>
+Whose echoes live in memory yet, <br>
+Though envious years would say “forget”.
+
+Come, hearken then, ere voice of dread, <br>
+With bitter tidings laden, <br>
+Shall summon to unwelcome bed <br>
+A melancholy maiden! <br>
+We are but older children, dear, <br>
+Who fret to find our bedtime near.
+
+Without, the frost, the blinding snow, <br>
+The storm-wind’s moody madness— <br>
+Within, the firelight’s ruddy glow, <br>
+And childhood’s nest of gladness. <br>
+The magic words shall hold thee fast: <br>
+Thou shalt not heed the raving blast.
+
+And, though the shadow of a sigh <br>
+May tremble through the story, <br>
+For “happy summer days” gone by, <br>
+And vanish’d summer glory— <br>
+It shall not touch with breath of bale, <br>
+The pleasance of our fairy-tale.</i>

@@ -21,7 +21,6 @@ except:
 from xml.sax import SAXException
 import xml.sax.handler
 
-from epub import epub
 
 MWXHTMLWriter.ignoreUnknownNodes = False
 
@@ -44,9 +43,9 @@ class MyWriter(MWXHTMLWriter):
 
         this is a hack to let created documents pass the validation test.
         """
-        e = ET.Element(self.paratag)  # "div" or "p"
+        element = ET.Element(self.paratag)  # "div" or "p"
         #e.set("class", "mwx.paragraph")
-        return e
+        return element
 
 
 class ValidationError(Exception):
@@ -69,37 +68,38 @@ class WikiHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
         xml.sax.handler.ContentHandler.__init__(self)
         self.stack = []
-        self.elementIndex = 0
+        self.element_index = 0
         self.limit = 100000
-        self.inElement = ""
+        self.in_element = ""
         self.text = ""
 
     def startElement(self, name, attributes):
-        self.elementIndex += 1
-        if self.elementIndex > self.limit and self.limit > 0:
+        self.element_index += 1
+        if self.element_index > self.limit and self.limit > 0:
             raise SAXException('Reached limit count')  # stop parsing
         self.stack.append(name)
-        self.inElement = name
+        self.in_element = name
 
     def characters(self, data):
-        if self.inElement == "rev":
-            self.text += data.encode('utf-8')
+        if self.in_element == "rev":
+            self.text += data
 
     def endElement(self, name):
         self.stack.pop()
 
 
-def parse_wediawiki_xml(text):
+def parse_mediawiki_xml(text):
     handler = WikiHandler()
     try:
         xml.sax.parseString(text, handler)
-    except SAXException:
-        print "caught"
+    except SAXException, inst:
+        print "caught:", inst
     return handler.text
 
 
 def http_get(host, uri):
-    print "http_get: ", uri
+    """Do an http get request, returning the text as a unicode string."""
+    print "http_get: ", host, uri
     http = httplib.HTTP(host)
 
     # write header
@@ -107,29 +107,20 @@ def http_get(host, uri):
     http.putrequest("GET", uri)
     http.putheader("User-Agent", USER_AGENT)
     http.putheader("Host", host)
-    http.putheader("Accept", "*/*")
+    http.putheader("Accept", "text/html; charset=utf-8")
+    #http.putheader("Accept", "*/*")
     http.endheaders()
 
     # get response
     errcode, errmsg, headers = http.getreply()
+    #print "getreply",errcode,errmsg,headers
     if errcode != 200:
-        raise Error(errcode, errmsg, headers)
+        raise IOError(errcode, errmsg, headers)
 
     FILE = http.getfile()
     text = FILE.read()
-    print "ttt:",text
-    text = text.decode("utf-8")
-    text = unicode(text)
-    return text
-
-
-
-def http_getOld(host, uri):
-    conn = httplib.HTTPConnection(host)
-    conn.request("GET", uri)
-    r1 = conn.getresponse()
-    print r1.status, r1.reason
-    text = r1.read()
+    #/w/api.php?format=xml&action=query&prop=revisions&titles=Through_the_Looking-Glass,_and_What_Alice_Found_There/Preface&rvprop=content|timestamp|user|ids
+    text = text.decode("utf-8")  # from utf-8 to unicode
     return text
 
 
@@ -138,10 +129,13 @@ def get_xhtml(wikitext):
     #wikitext.decode("utf-8").encode("ascii", "xmlcharrefreplace")
     #text = text.decode("utf-8")
     #text = unicode(text)
+
     r = parseString(title="", raw=wikitext)
     preprocess(r)
     dbw = MyWriter()
+    #print "x1"
     dbw.writeBook(r)
+    #print "x2"
     text = dbw.asstring()
     text = re.sub('<p />', '', text)
     text = re.sub('<p> ', '<p>', text)
@@ -159,7 +153,7 @@ def remove_templates(text):
     text = re.sub("\{\{\w*\}\}", "", text)
     text = re.sub("\{\{(?: [^\}]*)\}\}", "", text)
     text = re.sub("\{\{header[^\}]*\}\}\n*", "", text)
-    #text = re.sub('"', """, text)
+    text = re.sub("\{\{TextQuality[^\}]*\}\}\n*", "", text)
     text = re.sub('={2, 6}[\w\-: ]*={2, 6}', "", text)
     return text
 
@@ -229,7 +223,7 @@ def parse_wikisource_contents(text):
             cp = cp[pos:]
         cp = re.sub(" ", "_", cp)
         sections.append({'wikisubpage': cp.strip(), 'title': ct.strip()})
-        print "ch: ", cp, ct
+        #print "ch: ", cp, ct
     info['sections'] = sections
     return info
 
@@ -283,9 +277,9 @@ def get_mediawiki_book(epub, host, title):
     # http: //en.wikipedia.org/w/index.php?title=Computer_networking&action=render
     uri_template = "/w/api.php?format=xml&action=query&prop=revisions&titles=Book: %(title)s&rvprop=content|timestamp|user|ids"
     uri = uri_template % {'title': wikipagetitle}
-    print "uri", uri
+    #print "uri", uri
     text = http_get(host, uri)
-    print "text: ", text
+    #print "text: ", text
     info = parse_mediawiki_book_contents(text)
     info['source'] = "Wikisource"
     epub.set(info['title'], info['author'], info['author_as'], info['published'], info['source'])
@@ -299,27 +293,23 @@ def get_wikisource_work(epub, host, title):
     """
 
     wikipagetitle = re.sub(" ", "_", title)
-    print "wikipagetitle: ", wikipagetitle
     # http: //en.wikisource.org/w/api.php?format=xml&action=query&prop=revisions&titles=Through_the_Looking-Glass, _and_What_Alice_Found_There&rvprop=content|timestamp|user|ids
     # http: //en.wikisource.org/w/api.php?action=parse&page=Through_the_Looking-Glass, _and_What_Alice_Found_There
     # http: //en.wikisource.org/w/index.php?title=Through_the_Looking-Glass, _and_What_Alice_Found_There&action=render
     # http: //en.wikisource.org/w/index.php?title=Through_the_Looking-Glass, _and_What_Alice_Found_There/section_I&action=render
-    # http: //en.wikisource.org/w/api.php?format=xml&action=query&prop=revisions&titles=Through_the_Looking-Glass, _and_What_Alice_Found_There&rvprop=content|timestamp|user|ids
 
     uri_template = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids"
     #uri_template = "/w/api.php?action=parse&page=%(title)s"
     #uri_template = "/w/api.php?action=expandtemplates&title=%(title)s"
     uri = uri_template % {'title': wikipagetitle}
     text = http_get(host, uri)
-    #print "text: ", text
-    #return
-    print "uri", uri
-    text = parse_wediawiki_xml(text)
+    text = parse_mediawiki_xml(text)
     info = parse_wikisource_contents(text)
     info['source'] = "Wikisource"
     epub.set(info['title'], info['author'], info['author_as'], info['published'], info['source'])
     # add the title page
-    epub.add_section({'class': "title", 'type': "cover", 'id': "level1-title", 'playorder': "1", 'title': "Title", 'file': "titlepage", 'text': info['title']})
+    epub.add_section({'class': "title", 'type': "cover", 'id': "level1-title", 'playorder': "1",
+                      'title': "Title", 'file': "titlepage", 'text': info['title']})
     if len(info['sections']) == 0:
         add_section(epub, info, host, wikipagetitle, text)
     else:
@@ -332,32 +322,27 @@ def add_sections(epub, sections, host, wikipagetitle):
     Add sections to a work. Each section is from a MediaWiki page.
     """
 
-    print "sections: ", sections
+    print "\nsections: ", sections, "\n"
     uri_template = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids"
     #uri_template = "/w/api.php?format=xml&action=parse&page=%(title)s"
     count = 1
     for i in sections:
         # get each section (typically a chapter) and add it to the epub object
         # each section is a separate wiki page
-        if count > 1:
+        if count > 3:
             break
         print "=========================="
         print "getting", i['title']
         uri = uri_template % {'title': wikipagetitle + i['wikisubpage']}
         print "uri", uri
         text = http_get(host, uri)
-        #print "t1:", text
-        text = parse_wediawiki_xml(text)
-        #print "t2:", text
+        #print "--------------------------------------"
+        #print text.encode("utf-8")
+        #print "--------------------------------------"
+        text = parse_mediawiki_xml(text)
         text = remove_templates(text)
-        #text = text[0:340]
-        print "--------------------------------------"
-        print text
-        print "--------------------------------------"
-        #print "t3:", text
         #text = get_xhtml(text)
-        #print "t4:", text
-        #text = mediawiki_to_xhtml(text, [])
+        text = mediawiki_to_xhtml(text, [])
         epub.add_section({'class': "chapter", 'type': "text", 'id': "level1-s" + str(count),
             'playorder': str(count + 1), 'count': str(count), 'title': i['title'],
             'file': "main" + str(count), 'text': text})
@@ -365,8 +350,11 @@ def add_sections(epub, sections, host, wikipagetitle):
 
 
 def add_section(epub, host, wikipagetitle, text):
-    """Whole work is one wiki page, so split each headings into a section."""
-    # eg "Groundwork of the Metaphysics of Morals" at http: //en.wikisource.org/wiki/Groundwork_of_the_Metaphysics_of_Morals
+    """
+    Whole work is one wiki page, so split each headings into a section.
+    eg "Groundwork of the Metaphysics of Morals" at
+    http: //en.wikisource.org/wiki/Groundwork_of_the_Metaphysics_of_Morals
+    """
 
     print "zero sections"
     # reget the page, expanding the templates
@@ -374,7 +362,7 @@ def add_section(epub, host, wikipagetitle, text):
     uri = uri_template % {'title': wikipagetitle}
     text = http_get(host, uri)
     print "uri", uri
-    text = parse_wediawiki_xml(text)
+    text = parse_mediawiki_xml(text)
 
     #print "text: ", text
     refcount = 0
@@ -400,7 +388,7 @@ def add_section(epub, host, wikipagetitle, text):
     chtitle = "main"
     count = 1
     for m in re.finditer("(\s*==([^=]+)==\s+)", text):
-        print "s1, e1", m.start(1), m.end(1)
+        #print "s1, e1", m.start(1), m.end(1)
         #print "s2, e2", m.start(2), m.end(2)
         end = m.start(1)
         if start != 0:
@@ -422,7 +410,3 @@ def add_section(epub, host, wikipagetitle, text):
     epub.add_section({'class': "chapter", 'type': "text",
         'id': "level1-chapter" + str(count), 'playorder': str(count + 1),
         'count': str(count), 'title': chtitle, 'file': "main" + str(count), 'text': chtext})
-    #text = parseMediaWikiXML(text)
-    #text = remove_templates(text)
-    #text = get_xhtml(text)
-    #epub.add_section({'class': "section", 'type': "text", 'id': "level1-section"+str(count), 'playorder': str(playorder), 'count': str(count), 'title': "XXXX", 'file': "main"+str(count), 'text': text})

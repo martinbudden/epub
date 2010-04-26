@@ -1,2 +1,2 @@
 #!/bin/bash
-pylint -rn --rcfile=.pylintrc mediawikibook.py
+pylint -rn --rcfile=pylintrc getbook.py
