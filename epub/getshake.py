@@ -22,9 +22,7 @@ class MyXMLHandler(xml.sax.handler.ContentHandler):
         self.text = ""
         self.chapter_text = ""
         self.act = 0
-        self.count = 1
         self.scene = 0
-        self.playorder = 1
         self.chapter_title = ""
         self.chapter_text = ""
         self.titles = {}
@@ -48,7 +46,7 @@ class MyXMLHandler(xml.sax.handler.ContentHandler):
         if name == "SCENE" or name == "FM" or name == "PERSONAE":
             print "MMM", name
         tag = "<" + name + ">"
-        if name != "PLAY":
+        if name != 'PLAY' and name != 'ACT':
             self.text += tag
 
     def characters(self, data):
@@ -88,13 +86,9 @@ class MyXMLHandler(xml.sax.handler.ContentHandler):
                 xmlid = name
                 print self.chapter_text
             self.chapter_title = title
-            self.book.add_section({'class': "chapter", 'type': "text", 'id': xmlid,
-                                   'playorder': str(self.playorder), 'count': str(self.count),
-                                   'title': self.chapter_title, 'file': "main" + str(self.count),
+            self.book.add_section({'id': xmlid, 'title': self.chapter_title,
                                    'text': self.chapter_text})
             self.chapter_text = ""
-            self.count += 1
-            self.playorder += 1
         #print self.text
         self.text = ""
 
@@ -130,9 +124,10 @@ def main():
     book = epub.EPub(bookdir)
     book.set_uuid(uid)
     book.stylesheets = {'main': 'play.css', 'titlepage': "titlepage.css"}
+    book.templates['main'] = 'mainplay.xml'
+    book.dtdfilename = 'play.dtd'
     book.set(title, author, author_as, published, "Testsource")
-    book.add_section({'class': "title", 'type': "cover", 'id': "level1-title",
-                      'playorder': "1", 'title': "Title", 'file': "titlepage", 'text': title})
+    book.add_section({'id': "level1-title", 'title': "Title", 'text': title})
     filename = "../test/data/hamlet.xml"
     parse_xml(book, filename)
     book.write_epub()

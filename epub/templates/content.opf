@@ -27,7 +27,7 @@
 
 <!-- CSS Style Sheets -->
 {% for stylesheet in stylesheets %}
-<item id="{{ stylesheet }}-css" href="css/{{ stylesheet }}" media-type="text/css"/>
+<item id="{{ stylesheet }}-css" href="css/{{ stylesheet }}.css" media-type="text/css"/>
 {% endfor %}
 
 <!-- Images -->

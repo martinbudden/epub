@@ -119,23 +119,15 @@ def http_get(host, uri):
 
     FILE = http.getfile()
     text = FILE.read()
-    #/w/api.php?format=xml&action=query&prop=revisions&titles=Through_the_Looking-Glass,_and_What_Alice_Found_There/Preface&rvprop=content|timestamp|user|ids
     text = text.decode("utf-8")  # from utf-8 to unicode
     return text
 
 
 def get_xhtml(wikitext):
-    #wikitext = unicode(wikitext.decode("utf-8"))
-    #wikitext.decode("utf-8").encode("ascii", "xmlcharrefreplace")
-    #text = text.decode("utf-8")
-    #text = unicode(text)
-
     r = parseString(title="", raw=wikitext)
     preprocess(r)
     dbw = MyWriter()
-    #print "x1"
     dbw.writeBook(r)
-    #print "x2"
     text = dbw.asstring()
     text = re.sub('<p />', '', text)
     text = re.sub('<p> ', '<p>', text)
@@ -159,6 +151,7 @@ def remove_templates(text):
 
 
 def mediawiki_to_xhtml(text, references):
+    text = re.sub("<br>", '<br />', text)
     paragraphs = re.split('\n\n+', text)
     s = ""
     for i in paragraphs:
@@ -176,8 +169,8 @@ def mediawiki_to_xhtml(text, references):
                     s += re.sub("\{\{reflist\}\}", reftext, text)
                 else:
                     s += "<p>" + i + "</p>\n\n"
-    s = re.sub("<poem>", '<div class="verse">', s)
-    s = re.sub("</poem>", '</div>', s)
+    s = re.sub("<p><poem>", '<div class="verse"><p>', s)
+    s = re.sub("</poem></p>", '</p></div>', s)
     return s
 
 
@@ -308,8 +301,7 @@ def get_wikisource_work(epub, host, title):
     info['source'] = "Wikisource"
     epub.set(info['title'], info['author'], info['author_as'], info['published'], info['source'])
     # add the title page
-    epub.add_section({'class': "title", 'type': "cover", 'id': "level1-title", 'playorder': "1",
-                      'title': "Title", 'file': "titlepage", 'text': info['title']})
+    epub.add_section({'title': "Title", 'text': info['title']})
     if len(info['sections']) == 0:
         add_section(epub, info, host, wikipagetitle, text)
     else:
@@ -343,9 +335,8 @@ def add_sections(epub, sections, host, wikipagetitle):
         text = remove_templates(text)
         #text = get_xhtml(text)
         text = mediawiki_to_xhtml(text, [])
-        epub.add_section({'class': "chapter", 'type': "text", 'id': "level1-s" + str(count),
-            'playorder': str(count + 1), 'count': str(count), 'title': i['title'],
-            'file': "main" + str(count), 'text': text})
+        epub.add_section({'id': "level1-s" + str(count),
+            'title': i['title'], 'text': text})
         count += 1
 
 
@@ -396,10 +387,7 @@ def add_section(epub, host, wikipagetitle, text):
             chtext = mediawiki_to_xhtml(chtext, references)
             print "chtitle: ", chtitle
             print "chtext: ", chtext[0: 40]
-            epub.add_section({'class': "chapter", 'type': "text",
-                'id': "level1-chapter" + str(count), 'playorder': str(count + 1),
-                'count': str(count), 'title': chtitle,
-                'file': "main" + str(count), 'text': chtext})
+            epub.add_section({'title': chtitle, 'text': chtext})
             count += 1
         start = m.end(1)
         chtitle = m.group(2)
@@ -407,6 +395,4 @@ def add_section(epub, host, wikipagetitle, text):
     print "sx, ex", start, end
     print "chtextx: ", chtitle, chtext
     chtext = mediawiki_to_xhtml(chtext, references)
-    epub.add_section({'class': "chapter", 'type': "text",
-        'id': "level1-chapter" + str(count), 'playorder': str(count + 1),
-        'count': str(count), 'title': chtitle, 'file': "main" + str(count), 'text': chtext})
+    epub.add_section({'title': chtitle, 'text': chtext})

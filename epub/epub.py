@@ -27,23 +27,26 @@ class EPub():
         if not os.path.isdir(self.bookdir):
             os.makedirs(self.bookdir)
         self.sections = []
-        self.opffilename = "content.opf"
-        self.ncxfilename = "toc.ncx"
-        self.title = ""
-        self.uuid = ""
-        self.author = ""
-        self.author_as = ""
-        self.depth = "1"
-        self.description = ""
-        self.source = ""
-        self.publisher = ""
-        self.publication = ""
-        self.published = ""
-        self.rights = ""
-        self.language = "en"
-        self.xml_ext = ".xml"
-        self.opsdir = ""
-        self.stylesheets = {'page': "page.css", 'titlepage': "titlepage.css", 'about': "about.css", 'main': "main.css"}
+        self.playorder = 1
+        self.opffilename = 'content.opf'
+        self.ncxfilename = 'toc.ncx'
+        self.dtdfilename = ''
+        self.title = ''
+        self.uuid = ''
+        self.author = ''
+        self.author_as = ''
+        self.depth = '1'
+        self.description = ''
+        self.source = ''
+        self.publisher = ''
+        self.publication = ''
+        self.published = ''
+        self.rights = ''
+        self.language = 'en'
+        self.xml_ext = '.xml'
+        self.opsdir = ''
+        self.stylesheets = {'page': 'page.css', 'titlepage': 'titlepage.css', 'about': 'about.css', 'main': 'main.css'}
+        self.templates = {'main': 'main.xml', 'container': 'container.xml', 'titlepage': "titlepage.xml"}
 
     def set(self, title, author, author_as, published, source):
         """Set the common attributes for the publication."""
@@ -59,6 +62,20 @@ class EPub():
 
     def add_section(self, section):
         """Add a section to the publication."""
+        section['playorder'] = str(self.playorder)
+        if self.playorder == 1:
+            section['class'] = 'title'
+            section['file'] = 'titlepage'
+            section['type'] = 'cover'
+            section['id'] = 'level1-title'
+        else:
+            section['class'] = 'chapter'
+            section['file'] = 'main' + str(self.playorder - 1)
+            section['type'] = 'text'
+            section['count'] = str(self.playorder - 1)
+            if section['id'] == None:
+                section['id'] = 'level1-chapter' + str(self.playorder - 1)
+        self.playorder += 1
         self.sections.append(section)
 
     def write_file(self, dirname, filename, content):
@@ -77,7 +94,7 @@ class EPub():
         metainfdir = os.path.join(self.bookdir, "META-INF")
         if not os.path.isdir(metainfdir):
             os.makedirs(metainfdir)
-        template = self.env.get_template("container.xml")
+        template = self.env.get_template(self.templates['container'])
         s = template.render({'file': self.opffilename})
         self.write_file(metainfdir, "container" + self.xml_ext, s)
 
@@ -116,10 +133,16 @@ class EPub():
             'author': self.author_as, 'sections': self.sections})
         self.write_file(self.opsdir, self.ncxfilename, s)
 
+    def write_dtd(self):
+        """Write the dtd file."""
+        template = self.env.get_template("play.dtd")
+        s = template.render()
+        self.write_file(self.opsdir, self.dtdfilename, s)
+
     def write_title(self, filename):
         """Write the publication's titlepage."""
         css = self.stylesheets['titlepage']
-        template = self.env.get_template("titlepage.xml")
+        template = self.env.get_template(self.templates['titlepage'])
         s = template.render({'title': self.title, 'css': css, 'author': self.author, 'published': self.published, 'source': self.source})
         self.write_file(self.opsdir, filename, s)
 
@@ -129,7 +152,7 @@ class EPub():
         #if section['title'].find("section")==-1:
         #<span class="translation">{{ translation }}</span> <span class="count">{{ count }}</span>
         #extra = extra % {'translation': self.sectionTranslation, 'count': section['count']}
-        template = self.env.get_template("main.xml")
+        template = self.env.get_template(self.templates['main'])
         s = template.render({'css': css, 'id': section['id'], 'class': section['class'], 'title': section['title'], 'text': section['text']})
         self.write_file(self.opsdir, section['file'] + self.xml_ext, s)
 
@@ -148,6 +171,8 @@ class EPub():
             os.makedirs(self.opsdir)
         self.write_opf()
         self.write_ncx()
+        if self.dtdfilename:
+            self.write_dtd()
         self.write_stylesheets()
         #self.writeImages()
         self.write_content()
