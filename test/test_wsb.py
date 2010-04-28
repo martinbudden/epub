@@ -47,24 +47,27 @@ def get_wikisource_work(pub, host, title):
     Get a Wikisource work (typically a book) and put its contents into an epub object.
     """
 
-    uri_template = "/w/api.php?format=xml&action=query&prop=revisions&titles=%(title)s&rvprop=content|timestamp|user|ids"
+    wikipagetitle = title
+    uri_template = '/w/api.php?format=xml&action=query&prop=revisions' \
+                   '&titles=%(title)s&rvprop=content|timestamp|user|ids'
     uri = uri_template % {'title': wikipagetitle}
     text = read_file(uri)
     print "uri", uri
-    text = parse_mediawiki_xml(text)
-    info = parse_wikisource_contents(text)
+    text = mediawikibook.parse_mediawiki_xml(text)
+    info = mediawikibook.parse_wikisource_contents(text)
     info['source'] = "Wikisource"
     pub.set(info['title'], info['author'], info['author_as'], info['published'], info['source'])
     # add the title page
-    pub.add_section({'class': "title", 'type': "cover", 'id': "level1-title", 'playorder': "1", 'title': "Title", 'file': "titlepage", 'text': info['title']})
+    pub.add_section({'title': "Title", 'text': info['title']})
     if len(info['sections']) == 0:
-        add_section(epub, info, host, wikipagetitle, text)
+        mediawikibook.add_section(epub, host, wikipagetitle, text)
     else:
-        add_sections(epub, info['sections'], host, wikipagetitle)
+        mediawikibook.add_sections(epub, info['sections'], host, wikipagetitle)
     return epub
 
 
 def test_Great_Expectations():
+    """Test using data based on Great Expectations"""
     text = read_file("test/data/Great Expectations.txt")
     info = mediawikibook.parse_wikisource_contents(text)
     assert info['title'] == "Great Expectations"
@@ -74,6 +77,7 @@ def test_Great_Expectations():
 
 
 def test_Through_the_Looking_Glass():
+    """Test using data based on Through the Looking-Glass"""
     title = "Through the Looking-Glass, and What Alice Found There"
     bookdir = "epub/books/" + title
     pub = epub.EPub(bookdir)
@@ -84,15 +88,18 @@ def test_Through_the_Looking_Glass():
     assert info['author'] == "Lewis Carroll"
     sections = info['sections']
     print sections
-    assert sections[0] == {'wikisubpage': '/Preface', 'title': 'Poem: Child of the pure unclouded brow'}
-    assert sections[1] == {'wikisubpage': '/Chapter_I', 'title': 'Chapter I: Looking-Glass House'}
-    assert sections[2] == {'wikisubpage': '/Chapter_II', 'title': 'Chapter II: The Garden of Live Flowers'}
+    assert sections[0] == {'wikisubpage': '/Preface',
+                           'title': 'Poem: Child of the pure unclouded brow'}
+    assert sections[1] == {'wikisubpage': '/Chapter_I',
+                           'title': 'Chapter I: Looking-Glass House'}
+    assert sections[2] == {'wikisubpage': '/Chapter_II',
+                           'title': 'Chapter II: The Garden of Live Flowers'}
     sections = sections[0:2]
     info['source'] = "Wikisource"
     print "sss:", sections
     pub.set(info['title'], info['author'], info['author_as'], info['published'], info['source'])
     # add the title page
-    pub.add_section({'class': "title", 'type': "cover", 'id': "level1-title", 'playorder': "1", 'title': "Title", 'file': "titlepage", 'text': info['title']})
+    pub.add_section({'title': "Title", 'text': info['title']})
     #add_sections(pub, sections, "test/data/" + title)
     add_sections(pub, sections, "test/data/" + "alice")
     pub.write_epub()
@@ -102,12 +109,14 @@ def test_Through_the_Looking_Glass():
 
 
 def test_Treasure_Island():
+    """Test using data based on Treasure Island"""
     text = read_file("test/data/Treasure Island.txt")
     info = mediawikibook.parse_wikisource_contents(text)
     assert info['title'] == "Treasure Island"
     assert info['author'] == "Robert Louis Stevenson"
     sections = info['sections']
-    assert sections[0] == {'wikisubpage': '/Chapter_1', 'title': 'Chapter 1: The Old Sea-dog at the Admiral Benbow'}
+    assert sections[0] == {'wikisubpage': '/Chapter_1',
+                           'title': 'Chapter 1: The Old Sea-dog at the Admiral Benbow'}
 
 
 def main():

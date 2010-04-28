@@ -15,9 +15,9 @@ def test_xml():
     FILE = open(filename, "r")
     text = FILE.read()
     FILE.close()
-    print "isinstance1",isinstance(text, unicode)
+    print "isinstance1", isinstance(text, unicode)
     text = text.decode("mac_roman")  # from latin-1 to unicode
-    print "isinstance2",isinstance(text, unicode)
+    print "isinstance2", isinstance(text, unicode)
     #text = text.encode("latin-1")  # from unicode to latin-1
 
 
